@@ -1,0 +1,7 @@
+version: '3.2'
+services:
+  bugsjs-env:
+    image: bugsjs-env
+    build:
+      context: .
+      dockerfile: Dockerfile
