@@ -1,11 +1,13 @@
-#!/usr/bin/env node
+#!/usr/bin/env /usr/local/bin/node
 
 'use strict'
 
 const process = require ('process');
 const fs = require('fs-extra');
 const path = require('path');
-const { spawn } = require( 'child_process' );
+var glob = require("glob")
+var fs_a = require('fs');
+//const { spawn } = require( 'child_process' );
 const child_process = require('child_process');
 
 function escapeRegex(str) {
@@ -17,7 +19,7 @@ function escapeTestName(str) {
 };
 
 function help() {
-  console.log ("Use: pertest.js [-h|--help] [-t|--tests tests.json] [-r|--results results.csv] [-m|--mapfile testMap.csv] [-c|--cmd command]\n");
+  console.log ("Use: pertest.js [-h|--help] [-t|--tests tests.json] [-r|--results results.csv] [-m|--mapfile testMap.csv] [-c|--cmd command] [--chain]\n");
 }
 
 function main () {
@@ -25,6 +27,7 @@ function main () {
   var testsFile = "tests.json";
   var mapFile = "testMap.csv";
   var cmd = "";
+  var chain = false;
   for (let j = 2; j < process.argv.length; j++) {
     if (process.argv[j][0] == "-") {
       switch (process.argv[j]) {
@@ -48,6 +51,9 @@ function main () {
           testsFile = process.argv[j+1];
           j++;
           break;
+        case '--chain':
+          chain = true;
+          break;
         case '-h':
         case '--help':
         default:
@@ -64,12 +70,14 @@ function main () {
   var i = 1;
   var testMap = {};
   var results = {};
+
   tests.forEach(function(test){
     var mapName = "test_"+i.toString();
     i++;
     testMap[mapName] = test;
     console.log(mapName+"="+test);
     var output = "";
+
     try {
       output = child_process.execSync(cmd + " -g '^"+escapeRegex(test).replace(/'/g, "'\"'\"'")+"$'", {stdio:['ignore', 'pipe', 'ignore']}).toString();
       results[mapName] = 1;
@@ -81,14 +89,41 @@ function main () {
     if (ind != -1) {
       output = output.slice(0, ind);
     }
+    var index = output.indexOf("{");
+    output = output.substring(index);
     var result = JSON.parse(output);
     console.log(result.tests.length.toString()+" test(s) run: "+(results[mapName]?"Pass":"Fail"));
     fs.copySync(path.resolve(process.cwd(),'./coverage/coverage.json'), path.resolve(process.cwd(),'./coverage/'+mapName+'.json'));
+
+
+    if (chain) {
+      var files = glob.sync(path.resolve(process.cwd(),"./trace-*.txt"));
+      if (!files || files.length == 0) {
+	console.log("Trace file not found!");
+      } else {
+	if (files.length > 1) {
+	  var id = 9999999999;
+	  var file = "";
+	  for (var tfile in files) {
+	    var myRegexp = new RegExp(/.*trace-([0-9]+).txt/g);
+	    var match = myRegexp.exec(files[tfile])
+	    var tid = match[1];
+	    if (tid < id) {
+	      id = tid;
+	      file = files[tfile];
+	    }
+	  }
+	  fs.unlinkSync(file);
+	}
+	files = glob.sync(path.resolve(process.cwd(),"./trace-*.txt"));
+	fs.renameSync(path.resolve(process.cwd(), files[0]), path.resolve(process.cwd(),'./'+mapName+'_trace.txt'));
+      }
+    }
   });
 
-  var res = "result;id\n";
+  var res = "";
   for(var test in results) {
-    res += (results[test] ? "Pass" : "Fail") + ";" + test + '\n';
+    res += (results[test] ? "PASS" : "FAIL") + ": " + test + '\n';
   }
   fs.writeFileSync(resultsFile, res);
 
