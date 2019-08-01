@@ -43,11 +43,11 @@ RUN rm /etc/apt/sources.list.d/mongodb-org-3.6.list
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
 RUN echo 'deb http://downloads-distro.mongodb.org/repo/debian-sysvinit dist 10gen' | tee /etc/apt/sources.list.d/mongodb.list
 RUN apt-get update
-RUN apt-get install -y mongodb-10gen --force-yes
+RUN apt-get install -y mongodb-10gen
 RUN mv /usr/bin/mongod /usr/bin/mongod24
 RUN mv /usr/bin/mongo /usr/bin/mongo24
 RUN cp /etc/mongodb.conf /etc/mongodb.conf24
-RUN apt-get install -y mongodb-org --force-yes
+RUN apt-get install -y mongodb-org
 RUN mv /usr/bin/mongod /usr/bin/mongod26
 RUN mv /usr/bin/mongo /usr/bin/mongo26
 RUN cp /etc/mongod.conf /etc/mongodb.conf26
