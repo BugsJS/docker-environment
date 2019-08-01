@@ -65,8 +65,5 @@ ARG CACHE_DATE=2018-07-20
 
 
 RUN git clone https://github.com/BugsJS/bug-dataset.git /data
-#RUN cd /data && git checkout -b uj_vm
-#RUN git clone https://github.com/bvancsics/bug-dataset.git /work/bug-dataset
-
 
 VOLUME /data
