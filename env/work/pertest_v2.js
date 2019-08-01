@@ -60,7 +60,7 @@ function main () {
   }
 
   try {
-     console.log(child_process.execSync(cmd + " /work/hook_v2.js", {stdio:['pipe', 'pipe', 'pipe']}).toString());    
+     console.log(child_process.execSync(cmd + " /work/hook.js", {stdio:['pipe', 'pipe', 'pipe']}).toString());    
   } catch (ex) {
      console.log('\x1b[41m%s\x1b[0m', ex.stderr.toString());    
   }
