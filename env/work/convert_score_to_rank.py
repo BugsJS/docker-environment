@@ -52,4 +52,4 @@ def main(inputfile, csvfile, outputfile, score):
 
 
 if __name__ == "__main__":
-   main(args.input, args.csv, args.bugfix,  args.output, args.score)
+   main(args.input, args.csv,  args.output, args.score)
