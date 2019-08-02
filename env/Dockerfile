@@ -1,4 +1,4 @@
-FROM node:8.0
+FROM node:8.16-jessie
 
 RUN apt-get update && \
 	apt-get install -y nano python3 screen
@@ -26,6 +26,7 @@ RUN wget http://download.redis.io/releases/redis-3.2.12.tar.gz && \
 	cd .. && \
 	rm -rf redis-3.2.12 && \
 	rm redis-3.2.12.tar.gz
+
 
 # Mongodb for mongoose
 # 3.6
@@ -62,6 +63,7 @@ RUN chmod +x /work/*
 
 ARG CACHE_DATE=2018-07-20
 
-RUN git clone https://github.com/BugsJS/bug-dataset.git /work/bug-dataset
+
+RUN git clone https://github.com/BugsJS/bug-dataset.git /data
 
 VOLUME /data

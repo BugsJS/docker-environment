@@ -59,46 +59,13 @@ function main () {
     }
   }
 
-  var tests = JSON.parse(fs.readFileSync(testsFile, 'utf8'));
-
-  var i = 1;
-  var testMap = {};
-  var results = {};
-  tests.forEach(function(test){
-    var mapName = "test_"+i.toString();
-    i++;
-    testMap[mapName] = test;
-    console.log(mapName+"="+test);
-    var output = "";
-    try {
-      output = child_process.execSync(cmd + " -g '^"+escapeRegex(test).replace(/'/g, "'\"'\"'")+"$'", {stdio:['ignore', 'pipe', 'ignore']}).toString();
-      results[mapName] = 1;
-    } catch (ex) {
-      output = ex.stdout.toString();
-      results[mapName] = 0;
-    }
-    var ind = output.indexOf("=========");
-    if (ind != -1) {
-      output = output.slice(0, ind);
-    }
-    var result = JSON.parse(output);
-    console.log(result.tests.length.toString()+" test(s) run: "+(results[mapName]?"Pass":"Fail"));
-    fs.copySync(path.resolve(process.cwd(),'./coverage/coverage.json'), path.resolve(process.cwd(),'./coverage/'+mapName+'.json'));
-  });
-
-  var res = "result;id\n";
-  for(var test in results) {
-    res += (results[test] ? "Pass" : "Fail") + ";" + test + '\n';
+  try {
+     console.log(child_process.execSync(cmd + " /work/hook.js", {stdio:['pipe', 'pipe', 'pipe']}).toString());    
+  } catch (ex) {
+     console.log('\x1b[41m%s\x1b[0m', ex.stderr.toString());    
   }
-  fs.writeFileSync(resultsFile, res);
 
-  var mapres = "id@@@test_name\n";
-  for(var test in testMap) {
-    mapres += test + "@@@" + testMap[test] + '\n';
-  }
-  fs.writeFileSync(mapFile, mapres);
-
-  console.log("Done.");
+  console.log('\x1b[42m\x1b[30m\x1b[4m\x1b[5m\x1b[1m%s\x1b[0m',"Done.");
 
   return 0;
 }
@@ -113,3 +80,6 @@ if (require.main === module) {
     process.exit (-1);
   }
 }
+
+
+
