@@ -41,8 +41,7 @@ beforeEach(function(){
 		keyList = Object.keys(covV);
         	path  = keyList[0];
 		pathToCurrentDir = path.substring(0,path.lastIndexOf("/"));
-		//Get the second occurence of a substring:
-        	//      https://stackoverflow.com/questions/19035893/finding-second-occurrence-of-a-substring-in-a-string-in-java/35155037
+
         	indexOf_second_underscore = path.indexOf("_", path.indexOf("_") + 1);
 		pathToCurrentDir = path.substring(0, path.indexOf("/",path.indexOf("/", indexOf_second_underscore)+1));
         	path = path.substring(0, indexOf_second_underscore) + "_data";
@@ -87,8 +86,7 @@ afterEach(function(){
 	keyList.forEach(function(entry){
 
 		let covVar =  covV["" + entry + ""];
-		//s = JSON.stringify(covVar.s);
-		//b = JSON.stringify(covVar.b);
+
 		f = JSON.stringify(covVar.f);
 		
 		actualCoverage += "\"" + entry + "\"";
@@ -119,22 +117,14 @@ afterEach(function(){
 	
 	testname_Map["test_" + testNum + ""] = test_Fulltitle;
 
-	//console.log("test_" + testNum  + " = " +  test_Fulltitle);
+
 	console.log('\x1b[40m%s\x1b[0m', test_Fulltitle )
 	console.log(this.currentTest.state === "passed" ? '\x1b[42m\x1b[30m\x1b[4m\x1b[5m\x1b[1m%s\x1b[0m' +"Pass": '\x1b[41m\x1b[30m\x1b[4m\x1b[5m\x1b[1m%s\x1b[0m' + "Fail");
 	
 	keyList.forEach(function(entry){
          let covVar =  covV["" + entry + ""];
 
-	 /*for (let key in covVar.s)
-                   if (covVar.s.hasOwnProperty(key))
-			covV["" + entry + ""].s[key] = 0;
-	
-	 for (let key in covVar.b)
-                   if (covVar.b.hasOwnProperty(key))
-			for(let innerKey in key)
-				 covV["" + entry + ""].b[key][innerKey] = 0;
-	 */
+
 	 for (let key in covVar.f)
                    if (covVar.f.hasOwnProperty(key))
                         covV["" + entry + ""].f[key] = 0;
@@ -168,7 +158,7 @@ after(function() {
 		fs.writeFileSync(pathToCurrentDir + "/testMap.csv", JSON.stringify(testname_Map));
 		console.log(pathToCurrentDir + "/results.txt");
 		fs.writeFileSync(pathToCurrentDir + "/perTest_results.txt", results);
-		//console.log(results);
+
         } catch(err) {
                 console.error(err);
         }
