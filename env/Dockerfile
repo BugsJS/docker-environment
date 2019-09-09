@@ -64,6 +64,6 @@ RUN chmod +x /work/*
 ARG CACHE_DATE=2018-07-20
 
 
-RUN git clone https://github.com/BugsJS/bug-dataset.git /data
+RUN git clone https://github.com/BugsJS/bug-dataset.git /work/bug-dataset
 
 VOLUME /data
