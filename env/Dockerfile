@@ -34,23 +34,11 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2930ADAE8CAF505
 RUN echo "deb http://repo.mongodb.org/apt/debian jessie/mongodb-org/3.6 main" | tee /etc/apt/sources.list.d/mongodb-org-3.6.list
 RUN apt-get update
 RUN apt-get install -y mongodb-org
-RUN mv /usr/bin/mongod /usr/bin/mongod36
-RUN mv /usr/bin/mongo /usr/bin/mongo36
-RUN cp /etc/mongod.conf /etc/mongodb.conf36
 RUN rm /etc/apt/sources.list.d/mongodb-org-3.6.list
 
 # 2.4, 2.6
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
-RUN echo 'deb http://downloads-distro.mongodb.org/repo/debian-sysvinit dist 10gen' | tee /etc/apt/sources.list.d/mongodb.list
-RUN apt-get update
-RUN apt-get install -y mongodb-10gen
-RUN mv /usr/bin/mongod /usr/bin/mongod24
-RUN mv /usr/bin/mongo /usr/bin/mongo24
-RUN cp /etc/mongodb.conf /etc/mongodb.conf24
-RUN apt-get install -y mongodb-org
-RUN mv /usr/bin/mongod /usr/bin/mongod26
-RUN mv /usr/bin/mongo /usr/bin/mongo26
-RUN cp /etc/mongod.conf /etc/mongodb.conf26
+RUN wget -qO- http://downloads.mongodb.org/linux/mongodb-linux-x86_64-2.4.14.tgz | tar zxfv - -C /opt
+RUN wget -qO- http://downloads.mongodb.org/linux/mongodb-linux-x86_64-2.6.12.tgz | tar zxfv - -C /opt
 
 RUN n 8.0.0
 
