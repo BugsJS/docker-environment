@@ -1,14 +1,16 @@
 FROM node:8.16-jessie
 
 RUN apt-get update && \
-	apt-get install -y nano python3 screen
+	apt-get install -y nano python3 screen zip unzip
 
 RUN mkdir -p /work
 WORKDIR /work
 RUN npm i --save fs-extra
+RUN npm i --save mkdirp
 RUN npm i -g istanbul
 RUN npm i -g n
 RUN npm i -g grunt-cli
+RUN npm i --save glob
 
 RUN echo '{ "allow_root": true, "registry": "https://registry.bower.io" }' > /root/.bowerrc
 
