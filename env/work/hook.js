@@ -126,7 +126,7 @@ after(function() {
         var actualmapfile = path + "/tests/json/maps.json";
         //fs.writeFileSync(actualmapfile, actualMap);
         zipFile(JSON.stringify(actualMap), actualmapfile + ".zip");
-        var mapfile = pathToCurrentDir + "/testMap.csv";
+        var mapfile = pathToCurrentDir + "/testMap.json";
         //fs.writeFileSync(mapfile, JSON.stringify(testname_Map));
         zipFile(JSON.stringify(testname_Map), mapfile + ".zip");
         console.log(pathToCurrentDir + "/results.txt");
