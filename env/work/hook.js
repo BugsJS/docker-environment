@@ -59,7 +59,7 @@ beforeEach(function() {
     }
 });
 afterEach(function() {
-    let test_Fulltitle = this.currentTest.fullTitle();
+    var test_Fulltitle = this.currentTest.fullTitle();
     if (coverageVariable == null) {
         var vars = varsList(),
             regex = new RegExp(/^\$\$cov_.*\$\$$/);
@@ -71,12 +71,12 @@ afterEach(function() {
         }
     }
     if (coverageVariable != null) {
-        let actualCoverage = "{",
+        var actualCoverage = "{",
             s = " ",
             b = " ",
             f = " ";
         keyList.forEach(function(entry) {
-            let covVar = covV["" + entry + ""];
+            var covVar = covV["" + entry + ""];
             f = JSON.stringify(covVar.f);
             actualCoverage += "\"" + entry + "\"";
             actualCoverage += " : {"
@@ -104,8 +104,8 @@ afterEach(function() {
         console.log('\x1b[40m%s\x1b[0m', test_Fulltitle)
         console.log(this.currentTest.state === "passed" ? '\x1b[42m\x1b[30m\x1b[4m\x1b[5m\x1b[1m%s\x1b[0m' + "Pass" : '\x1b[41m\x1b[30m\x1b[4m\x1b[5m\x1b[1m%s\x1b[0m' + "Fail");
         keyList.forEach(function(entry) {
-            let covVar = covV["" + entry + ""];
-            for (let key in covVar.f)
+            var covVar = covV["" + entry + ""];
+            for (var key in covVar.f)
                 if (covVar.f.hasOwnProperty(key)) covV["" + entry + ""].f[key] = 0;
         });
     }
